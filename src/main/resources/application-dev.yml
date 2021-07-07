@@ -1,0 +1,35 @@
+# *****************************开发环境*****************************
+
+spring:
+# sharding-jdbc配置
+  shardingsphere:
+    # 数据源配置
+    datasource:
+      name: ds
+      ds:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/shardingsphere?useUnicode=true&useSSL=true&characterEncoding=utf8
+        username: root
+        password: '123456'
+        max-total: 100
+    encrypt:
+      # 加密器配置
+      encryptors:
+        email_encryptor:
+          type: aes
+          props:
+            aes.key.value: 123456abc
+      # 脱敏表配置
+      tables:
+        user:
+          columns:
+            email:
+#              plainColumn: email
+              cipherColumn: encrypt_email
+              encryptor: email_encryptor
+    props:
+      # 是否使用密文列查询
+      query.with.cipher.column: false
+      # 是否打印SQL，默认false
+      sql.show: true
